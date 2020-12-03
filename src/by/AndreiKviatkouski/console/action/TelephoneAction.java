@@ -3,7 +3,7 @@ package by.AndreiKviatkouski.console.action;
 import by.AndreiKviatkouski.domain.Telephone;
 
 public interface TelephoneAction {
-    boolean save(Telephone telephone);
+    void save();
 
     void updatePhoneByHomeNumber();
     void  updatePhoneByMobileNumber();

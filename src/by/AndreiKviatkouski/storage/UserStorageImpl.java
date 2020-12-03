@@ -9,12 +9,6 @@ import java.util.Arrays;
 
 public class UserStorageImpl implements UserStorage {
     private static final User[] users = new User[50];
-    private static final TelephoneStorageImpl telephoneStorage = new TelephoneStorageImpl();
-
-    static {
-        users[0] = new User(1, "Andrew", "Li", "li@li.com", Role.ADMIN, telephoneStorage.getPhoneById(2));
-        users[1] = new User(2, "Andrew1", "Li1", "li1@li.com", Role.ADMIN, telephoneStorage.getPhoneById(1));
-    }
 
     @Override
     public boolean save(User user) {

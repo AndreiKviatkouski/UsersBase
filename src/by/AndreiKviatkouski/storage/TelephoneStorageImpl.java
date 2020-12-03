@@ -7,11 +7,6 @@ import java.util.Arrays;
 public class TelephoneStorageImpl implements TelephoneStorage {
     private static final Telephone[] telephones = new Telephone[50];
 
-    static {
-        telephones[0] = new Telephone(1, "11", "22");
-        telephones[1] = new Telephone(2, "11", "22");
-    }
-
     @Override
     public boolean save(Telephone telephone) {
         for (int i = 0; i < telephones.length; i++) {

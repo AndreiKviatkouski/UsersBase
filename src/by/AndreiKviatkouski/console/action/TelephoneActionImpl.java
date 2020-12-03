@@ -4,8 +4,7 @@ import by.AndreiKviatkouski.domain.Telephone;
 
 public class TelephoneActionImpl implements TelephoneAction {
     @Override
-    public boolean save(Telephone telephone) {
-        return false;
+    public void  save() {
     }
 
     @Override
