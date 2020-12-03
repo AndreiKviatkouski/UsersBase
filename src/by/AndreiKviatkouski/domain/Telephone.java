@@ -23,8 +23,7 @@ public class Telephone implements Serializable {
         this.mobileNumber = mobileNumber;
     }
 
-    public Telephone(int id, String homeNumber, String mobileNumber) {
-        this.id = id;
+    public Telephone( String homeNumber, String mobileNumber) {
         this.homeNumber = homeNumber;
         this.mobileNumber = mobileNumber;
     }

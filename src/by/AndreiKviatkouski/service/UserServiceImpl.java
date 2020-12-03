@@ -70,11 +70,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void remove(User user) {
+    public void remove(User user) throws UserException {
         if (userStorage.contains(user)){
             userStorage.remove(user);
         }
-
+        throw new UserException("Could not find user: " + user.getLastName());
     }
 
     @Override

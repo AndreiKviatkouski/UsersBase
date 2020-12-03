@@ -1,4 +1,4 @@
-package by.AndreiKviatkouski.console.action;
+package by.AndreiKviatkouski.console;
 
 import by.AndreiKviatkouski.domain.Role;
 import by.AndreiKviatkouski.domain.User;
@@ -14,7 +14,7 @@ public class Test {
         User user2 = new User(1, "Andrew", "Li", "li@li.com", Role.ADMIN, telephoneStorage.getPhoneById(2));
 
         try {
-            FileOutputStream fos = new FileOutputStream(new File("D:\\JavaObjects.txt"));
+            FileOutputStream fos = new FileOutputStream(new File("JavaObjects.txt"));
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             // Запись объектов в файл
             oos.writeObject(user1);
@@ -26,7 +26,7 @@ public class Test {
         }
         // Чтение объектов из файла
         try {
-            FileInputStream fis = new FileInputStream(new File("D:\\JavaObjects.txt"));
+            FileInputStream fis = new FileInputStream(new File("JavaObjects.txt"));
             ObjectInputStream ois = new ObjectInputStream(fis);
             User s1 = (User) ois.readObject();
             User s2 = (User) ois.readObject();

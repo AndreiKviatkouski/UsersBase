@@ -17,7 +17,7 @@ public interface UserService {
 
 
     void remove(int id) throws UserException;
-    void remove(User user);
+    void remove(User user) throws UserException;
 
     User getById(int id) throws UserException;
     User getUserByLastName(String lastName);

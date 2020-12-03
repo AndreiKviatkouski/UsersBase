@@ -1,11 +1,19 @@
 package by.AndreiKviatkouski.console.action;
 
-import by.AndreiKviatkouski.service.UserService;
-import by.AndreiKviatkouski.service.UserServiceImpl;
+public interface UserAction {
+    void save();
+
+    void updateUserByLastName();
+    void updateUserByFirstName();
+    void updateUserByEmail();
+    void updateUserByTelephone();
+    void updateUserByRole();
 
 
-public class UserAction {
-    private UserService userService = new UserServiceImpl();
-
-
+    void removeById();
+    void removeUser();
+    void getById();
+    void getUserByLastName();
+    void getUserByFirstName();
+    void getAll();
 }
