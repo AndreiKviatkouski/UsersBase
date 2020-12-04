@@ -9,10 +9,10 @@ import by.AndreiKviatkouski.domain.Telephone;
 import by.AndreiKviatkouski.domain.User;
 import by.AndreiKviatkouski.service.UserServiceImpl;
 
-
 import static by.AndreiKviatkouski.console.util.Reader.readInt;
 import static by.AndreiKviatkouski.console.util.Reader.readString;
 import static by.AndreiKviatkouski.console.util.Writer.writeString;
+
 
 public class UserActionImpl implements UserAction {
     UserServiceImpl userService = new UserServiceImpl();
@@ -54,7 +54,10 @@ public class UserActionImpl implements UserAction {
         user.setRole(Role.USER);
         userService.save(user);
         writeString("Creation is successful");
+
+        Writer.writeUserToFile(userService.getAll());
     }
+
 
     @Override
     public void updateUserByLastName() {
@@ -77,6 +80,7 @@ public class UserActionImpl implements UserAction {
             System.err.println(e.getMessage());
         }
 
+        Writer.writeUserToFile(userService.getAll());
     }
 
 
@@ -100,7 +104,7 @@ public class UserActionImpl implements UserAction {
         } catch (UserException e) {
             System.err.println(e.getMessage());
         }
-
+        Writer.writeUserToFile(userService.getAll());
     }
 
     @Override
@@ -123,7 +127,7 @@ public class UserActionImpl implements UserAction {
         } catch (UserException e) {
             System.err.println(e.getMessage());
         }
-
+        Writer.writeUserToFile(userService.getAll());
     }
 
 
@@ -156,6 +160,7 @@ public class UserActionImpl implements UserAction {
         } catch (UserException e) {
             System.err.println(e.getMessage());
         }
+        Writer.writeUserToFile(userService.getAll());
     }
 
     @Override
@@ -190,9 +195,8 @@ public class UserActionImpl implements UserAction {
             System.err.println(e.getMessage());
         }
 
+        Writer.writeUserToFile(userService.getAll());
     }
-
-
 
 
     @Override
@@ -209,6 +213,7 @@ public class UserActionImpl implements UserAction {
         } catch (UserException e) {
             System.err.println(e.getMessage());
         }
+        Writer.writeUserToFile(userService.getAll());
     }
 
     @Override
@@ -226,6 +231,7 @@ public class UserActionImpl implements UserAction {
         }
         writeString("User was deleted: " + user);
 
+        Writer.writeUserToFile(userService.getAll());
     }
 
 
@@ -239,7 +245,7 @@ public class UserActionImpl implements UserAction {
         }
         try {
             userService.getById(id);
-            writeString("Your finding user is: " + userService.getById(id));
+            writeString("The user is found: " + userService.getById(id));
         } catch (UserException e) {
             System.err.println(e.getMessage());
         }
@@ -292,7 +298,7 @@ public class UserActionImpl implements UserAction {
     public void getAll() {
         User[] all = userService.getAll();
         for (int i = 0; i < all.length; i++) {
-            writeString((i + 1) + " " + all[i].getFirstName() + " " + all[i].getLastName());
+            writeString((i + 1) + " " + all[i].getFirstName() + " " + all[i].getLastName() + " " + all[i].getRole() + " email: " + all[i].getEmail() + " home phone: " + all[i].getTelephone().getHomeNumber() +  " mobile phone: " + all[i].getTelephone().getMobileNumber());
         }
     }
 }

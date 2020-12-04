@@ -1,7 +1,6 @@
 package by.AndreiKviatkouski.service;
 
 import by.AndreiKviatkouski.console.exception.TelephoneException;
-import by.AndreiKviatkouski.console.exception.UserException;
 import by.AndreiKviatkouski.domain.Telephone;
 import by.AndreiKviatkouski.storage.TelephoneStorageImpl;
 

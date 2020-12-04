@@ -4,11 +4,23 @@ import by.AndreiKviatkouski.domain.Role;
 import by.AndreiKviatkouski.domain.Telephone;
 import by.AndreiKviatkouski.domain.User;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
 public class UserStorageImpl implements UserStorage {
+
     private static final User[] users = new User[50];
+//    private static final ArrayList<User> users = new ArrayList<>();
+
+    static {
+        Telephone telephone1 = new Telephone("8017-100-00-01", "+375-00-100-00-01");
+        Telephone telephone2 = new Telephone("8017-200-00-02", "+375-00-200-00-02");
+        users[0] = new User(1, "Cho", "Li", "li@li.com", Role.ADMIN, telephone1);
+        users[1] = new User(2, "Han", "Lun", "lun@li.com", Role.USER, telephone2);
+    }
+
+
 
     @Override
     public boolean save(User user) {
@@ -22,7 +34,7 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User updateUserByLastName( int id,String lastName) {
+    public User updateUserByLastName(int id, String lastName) {
         for (User value : users) {
             if (value.getId() == id) {
                 value.setLastName(lastName);
@@ -34,7 +46,7 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User updateUserByFirstName( int id,String firstName) {
+    public User updateUserByFirstName(int id, String firstName) {
         for (User value : users) {
             if (value.getId() == id) {
                 value.setFirstName(firstName);
@@ -46,7 +58,7 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User updateUserByEmail( int id,String email) {
+    public User updateUserByEmail(int id, String email) {
         for (User value : users) {
             if (value.getId() == id) {
                 value.setEmail(email);
@@ -58,7 +70,7 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User updateUserByTelephone( int id,Telephone telephone) {
+    public User updateUserByTelephone(int id, Telephone telephone) {
         for (User value : users) {
             if (value.getId() == id) {
                 value.setTelephone(telephone);
@@ -70,7 +82,7 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User updateUserByRole(int id,Role role) {
+    public User updateUserByRole(int id, Role role) {
         for (User value : users) {
             if (value.getId() == id) {
                 value.setRole(role);
@@ -199,12 +211,5 @@ public class UserStorageImpl implements UserStorage {
             }
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-        UserStorageImpl userStorage = new UserStorageImpl();
-        TelephoneStorageImpl telephoneStorage = new TelephoneStorageImpl();
-        telephoneStorage.remove("11");
-        System.out.println(userStorage.updateUserByLastName(1,"sfsfdsf"));
     }
 }

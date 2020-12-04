@@ -11,51 +11,33 @@ public class ConsoleApplication {
     private final UserActionImpl userAction = new UserActionImpl();
     private final TelephoneActionImpl telephoneAction = new TelephoneActionImpl();
 
+
     public void run() {
         while (true) {
             showUserMenu();
             switch (readInt()) {
                 case 0:
-                    showGetUserMenu();
-                    switch (readInt()) {
-                        case 0:
-                            continue;
-                        case 1:
-                            userAction.getAll();
-                            break;
-                        case 2:
-                            userAction.getById();
-                            break;
-                        case 3:
-                            userAction.getUserByFirstName();
-                            break;
-                        case 4:
-                            userAction.getUserByLastName();
-                            break;
-                        case 5:
-                            telephoneAction.getAllPhones();
-                            break;
-                        case 6:
-                            telephoneAction.getPhoneByHomeNumber();
-                            break;
-                        case 7:
-                            telephoneAction.getPhoneMobileNumber();
-                            break;
-                        case 8:
-                            telephoneAction.getPhoneById();
-                            break;
-                        default:
-                            writeString("Operation not found");
-                            break;
-                    }
+                    return;
                 case 1:
+                        showGetUserMenu();
+                        switch (readInt()) {
+                            case 0-> showUserMenu();
+                            case 1 ->userAction.getAll();
+                            case 2 ->userAction.getUserByFirstName();
+                            case 3 ->userAction.getUserByLastName();
+                            case 4 ->telephoneAction.getAllPhones();
+                            case 5 ->telephoneAction.getPhoneMobileNumber();
+                            case 6 -> telephoneAction.getPhoneById();
+                            default-> writeString("Operation not found");
+                    }
+                case 2:
                     showRemoveUserMenu();
                     switch (readInt()) {
                         case 0:
                             continue;
                         case 1:
                             userAction.removeUser();
-                            break;
+                            continue;
                         case 2:
                             userAction.removeById();
                             break;
@@ -73,7 +55,7 @@ public class ConsoleApplication {
                             continue;
                     }
                     break;
-                case 2:
+                case 3:
                     showUpdateUserMenu();
                     switch (readInt()) {
                         case 0:
@@ -103,7 +85,7 @@ public class ConsoleApplication {
                             writeString("Operation not found");
                             continue;
                     }
-                case 3:
+                case 4:
                     showSaveUserMenu();
                     switch (readInt()) {
                         case 0:
@@ -118,6 +100,8 @@ public class ConsoleApplication {
                             writeString("Operation not found");
                             continue;
                     }
+
+
                 default:
                     writeString("Operation not found");
                     break;
@@ -126,10 +110,11 @@ public class ConsoleApplication {
     }
     private void showUserMenu() {
         writeString("!!!!! USER MENU!!!!!");
-        writeString("0  - GET USER MENU");
-        writeString("1  - REMOVE USER MENU");
-        writeString("2  - UPDATE USER MENU");
-        writeString("3  - SAVE USER MENU");
+        writeString("0  - Exit");
+        writeString("1  - GET USER MENU");
+        writeString("2  - REMOVE USER MENU");
+        writeString("3  - UPDATE USER MENU");
+        writeString("4  - SAVE USER MENU");
 
     }
 
@@ -141,9 +126,9 @@ public class ConsoleApplication {
         writeString("3  - get user by firstname");
         writeString("4  - get user by lastname");
         writeString("5  - get all user's telephones");
-        writeString("5  - get user's home telephone");
-        writeString("5  - get user's mobile telephone");
-        writeString("5  - get user's telephone by id");
+        writeString("6  - get user's home telephone");
+        writeString("7  - get user's mobile telephone");
+        writeString("8  - get user's telephone by id");
     }
 
     private void showRemoveUserMenu() {
@@ -170,7 +155,7 @@ public class ConsoleApplication {
     private void showSaveUserMenu() {
         writeString("!!!!!Save USER MENU!!!!!");
         writeString("0  - Logout");
-        writeString("1  -  save user");
+        writeString("1  - save user");
         writeString("2  - save telephones ");
 
     }
