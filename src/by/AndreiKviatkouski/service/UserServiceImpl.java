@@ -4,81 +4,90 @@ import by.AndreiKviatkouski.console.exception.UserException;
 import by.AndreiKviatkouski.domain.Role;
 import by.AndreiKviatkouski.domain.Telephone;
 import by.AndreiKviatkouski.domain.User;
+import by.AndreiKviatkouski.storage.TelephoneStorageImpl;
 import by.AndreiKviatkouski.storage.UserStorageImpl;
+
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
 
-   UserStorageImpl userStorage = new UserStorageImpl();
+    UserStorageImpl userStorage = new UserStorageImpl();
+    TelephoneStorageImpl telephoneStorage = new TelephoneStorageImpl();
 
     @Override
     public boolean save(User user) {
-            if (userStorage.contains(user)) {
-                return false;
-            }
-            userStorage.save(user);
-            return true;
+        if (userStorage.contains(user)) {
+            return false;
         }
+        userStorage.save(user);
+        return true;
+    }
 
 
     @Override
-    public User updateUserByLastName(int id, String lastName) throws UserException {
+    public void updateUserByLastName(long id, String lastName) throws UserException {
         if (userStorage.contains(id)) {
-            return userStorage.updateUserByLastName(id,lastName);
+            userStorage.updateUserByLastName(id, lastName);
+            return;
         }
         throw new UserException("Could not find user with ID: " + id);
     }
 
     @Override
-    public User updateUserByFirstName(int id, String firstName) throws UserException {
-        if (userStorage.contains(id)){
-            return userStorage.updateUserByFirstName(id,firstName);
+    public void updateUserByFirstName(long id, String firstName) throws UserException {
+        if (userStorage.contains(id)) {
+            userStorage.updateUserByFirstName(id, firstName);
+            return;
         }
         throw new UserException("Could not find user with ID: " + id);
     }
 
 
     @Override
-    public User updateUserByEmail(int id, String email) throws UserException {
-        if (userStorage.contains(id)){
-            return userStorage.updateUserByEmail(id,email);
+    public void updateUserByEmail(long id, String email) throws UserException {
+        if (userStorage.contains(id)) {
+            userStorage.updateUserByEmail(id, email);
+            return;
         }
         throw new UserException("Could not find user with ID: " + id);
     }
 
     @Override
-    public User updateUserByTelephone(int id, Telephone telephone) throws UserException {
-        if (userStorage.contains(id)){
-            return userStorage.updateUserByTelephone(id,telephone);
+    public void updateUserByTelephone(long id, Telephone telephone) throws UserException {
+        if (userStorage.contains(id)) {
+            userStorage.updateUserByTelephone(id, telephone);
+            return;
         }
         throw new UserException("Could not find user with ID: " + id);
     }
 
     @Override
-    public User updateUserByRole(int id, Role role) throws UserException {
-        if (userStorage.contains(id)){
-            return userStorage.updateUserByRole(id,role);
+    public void updateUserByRole(long id, Role role) throws UserException {
+        if (userStorage.contains(id)) {
+            userStorage.updateUserByRole(id, role);
+            return;
         }
         throw new UserException("Could not find user with ID: " + id);
     }
 
     @Override
-    public void remove(int id) throws UserException {
+    public void remove(long id) throws UserException {
         if (userStorage.contains(id)) {
             userStorage.remove(id);
+            return;
         }
         throw new UserException("Could not find user with ID: " + id);
     }
 
     @Override
-    public void remove(User user) throws UserException {
-        if (userStorage.contains(user)){
+    public void remove(User user) {
+        if (userStorage.contains(user)) {
             userStorage.remove(user);
         }
-        throw new UserException("Could not find user: " + user.getLastName());
     }
 
     @Override
-    public User getById(int id) throws UserException {
+    public User getById(long id) throws UserException {
         if (userStorage.contains(id)) {
             return userStorage.getById(id);
         }
@@ -87,33 +96,33 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User getUserByLastName(String lastName) {
+    public User getUserByLastName(String lastName) throws UserException {
         if (userStorage.contains(lastName)) {
             return userStorage.getUserByLastName(lastName);
         }
-        return null;
+        throw new UserException("Could not find user with LastName: " + lastName);
     }
 
     @Override
-    public User getUserByFirstName(String firstName) {
-        if (userStorage.contains(firstName)) {
+    public User getUserByFirstName(String firstName) throws UserException {
+        if (userStorage.containsFirstName(firstName)) {
             return userStorage.getUserByFirstName(firstName);
         }
-        return null;
+        throw new UserException("Could not find user with firstName: " + firstName);
     }
 
     @Override
-    public User[] getAll() {
+    public List<User> getAll() {
         return userStorage.getAll();
     }
 
     @Override
-    public User checkUser(String mobileNumber) {
-        for (User user : userStorage.getAll()) {
-            if (user.getTelephone().getMobileNumber().equals(mobileNumber)){
-                return user;
-            }
-        }
-        return null;
+    public boolean checkUser(String mobileNumber) {
+        return telephoneStorage.contains(mobileNumber);
+    }
+
+    @Override
+    public boolean checkEmail(String email) {
+        return userStorage.containsEmail(email);
     }
 }

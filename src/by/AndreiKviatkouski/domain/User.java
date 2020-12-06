@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class User implements Serializable {
-    private static int incId = 1;
-    private int id = incId++;
+    private static long incId = 1;
+    private long id = incId++;
 
     private String firstName;
     private String lastName;
@@ -16,7 +16,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(int id, String firstName, String lastName, String email, Role role) {
+    public User(long id, String firstName, String lastName, String email, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,7 +24,7 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public User(int id, String firstName, String lastName, Role role, Telephone telephone) {
+    public User(long id, String firstName, String lastName, Role role, Telephone telephone) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -32,7 +32,7 @@ public class User implements Serializable {
         this.telephone = telephone;
     }
 
-    public User(int id, String firstName, String lastName, Role role) {
+    public User(long id, String firstName, String lastName, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -44,7 +44,7 @@ public class User implements Serializable {
         this.email = email;
         this.telephone = telephone;
     }
-    public User(int id, String firstName, String lastName, String email, Role role, Telephone telephone) {
+    public User(long id, String firstName, String lastName, String email, Role role, Telephone telephone) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -53,11 +53,11 @@ public class User implements Serializable {
         this.telephone = telephone;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -118,14 +118,16 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(firstName, user.firstName) &&
+        return id == user.id &&
+                Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
+                role == user.role &&
                 Objects.equals(telephone, user.telephone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, email, telephone);
+        return Objects.hash(id, firstName, lastName, email, role, telephone);
     }
 }

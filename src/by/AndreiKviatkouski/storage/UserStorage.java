@@ -4,27 +4,29 @@ import by.AndreiKviatkouski.domain.Role;
 import by.AndreiKviatkouski.domain.Telephone;
 import by.AndreiKviatkouski.domain.User;
 
+import java.util.List;
+
 public interface UserStorage {
 
     boolean save(User user);
 
-    User updateUserByLastName(int id, String lastName);
-    User updateUserByFirstName(int id, String firstName);
-    User updateUserByEmail(int id, String email);
-    User updateUserByTelephone(int id, Telephone telephone);
-    User updateUserByRole(int id, Role role);
+    void updateUserByLastName(long id, String lastName);
+    void updateUserByFirstName(long id, String firstName);
+    void updateUserByEmail(long id, String email);
+    void updateUserByTelephone(long id, Telephone telephone);
+    void updateUserByRole(long id, Role role);
 
-
-    void remove(int id);
+    void remove(long id);
     void remove(User user);
 
-    User getById(int id);
+    User getById(long id);
     User getUserByLastName(String lastName);
     User getUserByFirstName(String firstName);
-    User[] getAll();
+    List<User> getAll();
 
     boolean contains(User user);
-    boolean contains(int id);
+    boolean contains(long id);
     boolean contains(String lastName);
-    boolean contains(String firstName, String lastName);
+    boolean containsFirstName(String firstName);
+    boolean containsEmail (String email);
 }

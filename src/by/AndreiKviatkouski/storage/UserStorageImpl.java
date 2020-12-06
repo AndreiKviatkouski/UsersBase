@@ -5,131 +5,113 @@ import by.AndreiKviatkouski.domain.Telephone;
 import by.AndreiKviatkouski.domain.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 
 public class UserStorageImpl implements UserStorage {
 
-    private static final User[] users = new User[50];
-//    private static final ArrayList<User> users = new ArrayList<>();
+    private static final List<User> users = new ArrayList<>();
 
     static {
-        Telephone telephone1 = new Telephone("8017-100-00-01", "+375-00-100-00-01");
-        Telephone telephone2 = new Telephone("8017-200-00-02", "+375-00-200-00-02");
-        users[0] = new User(1, "Cho", "Li", "li@li.com", Role.ADMIN, telephone1);
-        users[1] = new User(2, "Han", "Lun", "lun@li.com", Role.USER, telephone2);
+        Telephone telephone1 = new Telephone("8017-100-00-00", "+375-29-100-00-00");
+        Telephone telephone2 = new Telephone("8017-200-00-00", "+375-29-200-00-00");
+        Telephone telephone3 = new Telephone("8017-300-00-00", "+375-29-300-00-00");
+        User user1 = new User(1, "Cho", "Li", "cho@li.com", Role.ADMIN, telephone1);
+        User user2 = new User(2, "Bob", "Jenson", "bob@gmail.com", Role.USER, telephone2);
+        User user3 = new User(3, "Ivan", "Petrov", "ivan@mail.ru", Role.MODERATOR, telephone3);
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
     }
-
 
 
     @Override
     public boolean save(User user) {
-        for (int i = 0; i < users.length; i++) {
-            if (users[i] == null) {
-                users[i] = user;
-                return true;
-            }
-        }
-        return false;
+        return users.add(user);
     }
 
     @Override
-    public User updateUserByLastName(int id, String lastName) {
+    public void updateUserByLastName(long id, String lastName) {
         for (User value : users) {
             if (value.getId() == id) {
                 value.setLastName(lastName);
-                return value;
+                return;
             }
 
         }
-        return null;
     }
 
     @Override
-    public User updateUserByFirstName(int id, String firstName) {
+    public void updateUserByFirstName(long id, String firstName) {
         for (User value : users) {
             if (value.getId() == id) {
                 value.setFirstName(firstName);
-                return value;
+                return;
             }
 
         }
-        return null;
     }
 
     @Override
-    public User updateUserByEmail(int id, String email) {
+    public void updateUserByEmail(long id, String email) {
         for (User value : users) {
             if (value.getId() == id) {
                 value.setEmail(email);
-                return value;
+                return;
             }
 
         }
-        return null;
     }
 
     @Override
-    public User updateUserByTelephone(int id, Telephone telephone) {
+    public void updateUserByTelephone(long id, Telephone telephone) {
         for (User value : users) {
             if (value.getId() == id) {
                 value.setTelephone(telephone);
-                return value;
+                return;
             }
 
         }
-        return null;
     }
 
     @Override
-    public User updateUserByRole(int id, Role role) {
+    public void updateUserByRole(long id, Role role) {
         for (User value : users) {
             if (value.getId() == id) {
                 value.setRole(role);
-                return value;
+                return;
             }
 
         }
-        return null;
     }
 
 
     @Override
-    public void remove(int id) {
-        for (int i = 0; i < users.length; i++) {
-            if (users[i].getId() == id) {
-                for (int j = i; j < users.length + 1; j++) {
-                    users[i] = users[j + 1];
-
-                }
-                break;
+    public void remove(long id) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getId() == id) {
+                users.remove(users.get(i));
             }
-
         }
-
     }
+
 
     @Override
     public void remove(User user) {
-        for (int i = 0; i < users.length; i++) {
-            if (users[i].equals(user)) {
-                for (int j = i; j < users.length + 1; j++) {
-                    users[i] = users[j + 1];
-                }
-                break;
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).equals(user)) {
+                users.remove(users.get(i));
             }
-
         }
-
     }
 
+
     @Override
-    public User getById(int id) {
+    public User getById(long id) {
         for (User user : users) {
             if (user.getId() == id) {
                 return user;
             }
-
         }
         return null;
     }
@@ -139,9 +121,7 @@ public class UserStorageImpl implements UserStorage {
         for (User user : users) {
             if (user.getLastName().equals(lastName)) {
                 return user;
-
             }
-
         }
         return null;
     }
@@ -157,35 +137,21 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User[] getAll() {
-        int count = 0;
-        for (User user : users) {
-            if (user != null) {
-                count++;
-            }
-        }
-        return Arrays.copyOf(users, count);
+    public List<User> getAll() {
+        return users;
     }
 
     @Override
     public boolean contains(User user) {
-        for (User value : users) {
-            if (value == null) break;
-            if (value.equals(user)) {
-                return true;
-            }
-        }
-        return false;
+        return users.contains(user);
     }
 
     @Override
-    public boolean contains(int id) {
+    public boolean contains(long id) {
         for (User user : users) {
-            if (user == null) break;
             if (user.getId() == id) {
                 return true;
             }
-
         }
         return false;
     }
@@ -193,23 +159,32 @@ public class UserStorageImpl implements UserStorage {
     @Override
     public boolean contains(String lastName) {
         for (User user : users) {
-            if (user == null) break;
             if (user.getLastName().equals(lastName)) {
                 return true;
             }
-
         }
         return false;
     }
 
     @Override
-    public boolean contains(String firstName, String lastName) {
+    public boolean containsFirstName(String firstName) {
         for (User user : users) {
-            if (user == null) break;
-            if (user.getFirstName().equals(firstName) && user.getLastName().equals(lastName)) {
+            if (user.getFirstName().equals(firstName)) {
                 return true;
             }
         }
         return false;
     }
+
+    @Override
+    public boolean containsEmail(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)){
+                return true;
+            }
+
+        }
+        return false;
+    }
 }
+

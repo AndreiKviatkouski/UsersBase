@@ -3,11 +3,11 @@ package by.AndreiKviatkouski.console.action;
 public interface UserAction {
     void save();
 
-    void updateUserByLastName();
-    void updateUserByFirstName();
-    void updateUserByEmail();
-    void updateUserByTelephone();
-    void updateUserByRole();
+    void updateUserLastNameById();
+    void updateUserFirstNameById();
+    void updateUserEmailById();
+    void updateUserTelephonesById();
+    void updateUserRoleById();
 
 
     void removeById();

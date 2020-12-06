@@ -6,12 +6,43 @@ public class Reader {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static int readInt() {
-        return scanner.nextInt();
+        while (true) {
+            try {
+                int num = Integer.parseInt(readWithInvite("Please enter the number: " + "\n"));
+                if (num < 0) throw new NumberFormatException();
+                return num;
+            } catch (NumberFormatException e) {
+                Writer.writeString("Number incorrect! Try again!"+ "\n");
+            }
+        }
+
     }
 
-    public static String readString() {
-        return scanner.next();
+    public static String readLine() {
+        String line = scanner.nextLine();
+        if (line.isEmpty()) {
+            Writer.writeString("Was entered empty string,");
+            return null;
+        }
+        return line;
     }
 
+
+    public static String readWithInvite(String invite) {
+        Writer.writeString(invite);
+        return readLine();
+    }
+
+    public static long readId() {
+        while (true) {
+            try {
+                long id = Long.parseLong(readWithInvite("Input Id:"));
+                if (id < 0) throw new NumberFormatException();
+                return id;
+            } catch (NumberFormatException e) {
+                Writer.writeString("Id incorrect! Try again!"+"\n");
+            }
+        }
+    }
 }
 

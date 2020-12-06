@@ -19,16 +19,25 @@ public class ConsoleApplication {
                 case 0:
                     return;
                 case 1:
-                        showGetUserMenu();
-                        switch (readInt()) {
-                            case 0-> showUserMenu();
-                            case 1 ->userAction.getAll();
-                            case 2 ->userAction.getUserByFirstName();
-                            case 3 ->userAction.getUserByLastName();
-                            case 4 ->telephoneAction.getAllPhones();
-                            case 5 ->telephoneAction.getPhoneMobileNumber();
-                            case 6 -> telephoneAction.getPhoneById();
-                            default-> writeString("Operation not found");
+                    showGetUserMenu();
+                    switch (readInt()) {
+                        case 0:
+                            continue;
+                        case 1:
+                            userAction.getAll();
+                            continue;
+                        case 2:
+                            userAction.getById();
+                            continue;
+                        case 3:
+                            userAction.getUserByFirstName();
+                            continue;
+                        case 4:
+                            userAction.getUserByLastName();
+                            continue;
+                        default:
+                            writeString("Operation not found");
+                            continue;
                     }
                 case 2:
                     showRemoveUserMenu();
@@ -40,50 +49,42 @@ public class ConsoleApplication {
                             continue;
                         case 2:
                             userAction.removeById();
-                            break;
-                        case 3:
-                            telephoneAction.removeById();
-                            break;
-                        case 4:
-                            telephoneAction.removeByMobileNumber();
-                            break;
-                        case 5:
-                            telephoneAction.removeByHomeNumber();
-                            break;
+                            continue;
                         default:
                             writeString("Operation not found");
-                            continue;
+                           continue;
                     }
-                    break;
+
+
                 case 3:
                     showUpdateUserMenu();
                     switch (readInt()) {
                         case 0:
                             continue;
                         case 1:
-                            userAction.updateUserByEmail();
-                            break;
+                            userAction.updateUserEmailById();
+                            continue;
                         case 2:
-                            userAction.updateUserByFirstName();
-                            break;
+                            userAction.updateUserFirstNameById();
+                            continue;
                         case 3:
-                            userAction.updateUserByLastName();
-                            break;
+                            userAction.updateUserLastNameById();
+                            continue;
                         case 4:
-                            userAction.updateUserByRole();
-                            break;
+                            userAction.updateUserRoleById();
+                            continue;
                         case 5:
-                            userAction.updateUserByTelephone();
-                            break;
+                            userAction.updateUserTelephonesById();
+                            continue;
                         case 6:
-                            telephoneAction.updatePhoneByMobileNumber();
-                            break;
+                            telephoneAction.updatePhoneMobileNumberById();
+                            continue;
                         case 7:
-                            telephoneAction.updatePhoneByHomeNumber();
-                            break;
+                            telephoneAction.updatePhoneHomeNumberById();
+                            continue;
                         default:
                             writeString("Operation not found");
-                            continue;
+                           continue;
                     }
                 case 4:
                     showSaveUserMenu();
@@ -92,15 +93,11 @@ public class ConsoleApplication {
                             continue;
                         case 1:
                             userAction.save();
-                            break;
-                        case 2:
-                            telephoneAction.save();
-                            break;
+                            continue;
                         default:
                             writeString("Operation not found");
                             continue;
                     }
-
 
                 default:
                     writeString("Operation not found");
@@ -108,55 +105,50 @@ public class ConsoleApplication {
             }
         }
     }
+
     private void showUserMenu() {
-        writeString("!!!!! USER MENU!!!!!");
+        writeString("!!!!! USER MENU!!!!!" + "\n");
         writeString("0  - Exit");
         writeString("1  - GET USER MENU");
         writeString("2  - REMOVE USER MENU");
         writeString("3  - UPDATE USER MENU");
-        writeString("4  - SAVE USER MENU");
+        writeString("4  - SAVE USER MENU" + "\n");
 
     }
 
     private void showGetUserMenu() {
-        writeString("!!!!!GET USER MENU!!!!!");
+        writeString("!!!!!GET USER MENU!!!!!" + "\n");
         writeString("0  - Logout");
         writeString("1  - get all user");
         writeString("2  - get user by id");
         writeString("3  - get user by firstname");
-        writeString("4  - get user by lastname");
-        writeString("5  - get all user's telephones");
-        writeString("6  - get user's home telephone");
-        writeString("7  - get user's mobile telephone");
-        writeString("8  - get user's telephone by id");
+        writeString("4  - get user by lastname" + "\n");
+
     }
 
     private void showRemoveUserMenu() {
-        writeString("!!!!!GET USER MENU!!!!!");
+        writeString("!!!!!GET USER MENU!!!!!" + "\n");
         writeString("0  - Logout");
         writeString("1  - remove user");
-        writeString("2  - remove user by Id");
-        writeString("3  - remove phone by Id");
-        writeString("4  - remove phone by mobile number");
-        writeString("5  - remove phone by home number");
+        writeString("2  - remove user by Id" + "\n");
+
     }
 
     private void showUpdateUserMenu() {
-        writeString("!!!!!UPDATE USER MENU!!!!!");
+        writeString("!!!!!UPDATE USER MENU!!!!!" + "\n");
         writeString("0  - Logout");
-        writeString("1  - update user email ");
-        writeString("2  - update user firstname");
-        writeString("3  - update user lastname");
-        writeString("4  -update user role ");
-        writeString("5  -update user phone ");
-        writeString("6  -update user mobile number ");
-        writeString("7  -update user home number ");
+        writeString("1  - update user email by id ");
+        writeString("2  - update user firstname by id");
+        writeString("3  - update user lastname by id");
+        writeString("4  - update user role by id");
+        writeString("5  - update user phones by id");
+        writeString("6  - update user mobile number by id ");
+        writeString("7  - update user home number by id " + "\n");
     }
-    private void showSaveUserMenu() {
-        writeString("!!!!!Save USER MENU!!!!!");
-        writeString("0  - Logout");
-        writeString("1  - save user");
-        writeString("2  - save telephones ");
 
+    private void showSaveUserMenu() {
+        writeString("!!!!!Save USER MENU!!!!!" + "\n");
+        writeString("0  - Logout");
+        writeString("1  - save user" + "\n");
     }
 }

@@ -5,13 +5,14 @@ import by.AndreiKviatkouski.domain.User;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.List;
 
 public class Writer {
     public static void writeString(String str) {
         System.out.println(str);
     }
 
-    public static void writeUserToFile(User[] users) {
+    public static void writeUserToFile(List<User> users) {
         try {
             FileOutputStream fos = new FileOutputStream("JavaObjects.txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);

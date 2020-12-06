@@ -1,21 +1,7 @@
 package by.AndreiKviatkouski.console.action;
 
-import by.AndreiKviatkouski.domain.Telephone;
-
 public interface TelephoneAction {
-    void save();
 
-    void updatePhoneByHomeNumber();
-    void  updatePhoneByMobileNumber();
-
-
-    void removeById();
-    void removeByHomeNumber();
-    void removeByMobileNumber();
-    void removeTelephone();
-
-    void  getPhoneById() ;
-    void  getPhoneByHomeNumber();
-    void  getPhoneMobileNumber();
-    void  getAllPhones();
+    void updatePhoneHomeNumberById();
+    void  updatePhoneMobileNumberById();
 }

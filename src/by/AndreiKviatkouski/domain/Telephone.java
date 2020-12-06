@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Telephone implements Serializable {
-    private static int incId = 1;
-    private int id = incId++;
+    private static long incId = 1;
+    private long id = incId++;
     private String homeNumber;
     private String mobileNumber;
 
@@ -18,7 +18,7 @@ public class Telephone implements Serializable {
         this.homeNumber = homeNumber;
     }
 
-    public Telephone(int id, String mobileNumber) {
+    public Telephone(long id, String mobileNumber) {
         this.id = id;
         this.mobileNumber = mobileNumber;
     }
@@ -28,11 +28,11 @@ public class Telephone implements Serializable {
         this.mobileNumber = mobileNumber;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

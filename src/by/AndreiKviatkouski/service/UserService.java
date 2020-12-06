@@ -6,24 +6,27 @@ import by.AndreiKviatkouski.domain.Telephone;
 import by.AndreiKviatkouski.domain.User;
 import by.AndreiKviatkouski.console.exception.UserException;
 
+import java.util.List;
+
 public interface UserService {
     boolean save(User user);
 
-    User updateUserByLastName(int id, String lastName) throws UserException;
-    User updateUserByFirstName(int id, String firstName) throws UserException;
-    User updateUserByEmail(int id, String email) throws UserException;
-    User updateUserByTelephone(int id, Telephone telephone) throws UserException;
-    User updateUserByRole(int id, Role role) throws UserException;
+    void updateUserByLastName(long id, String lastName) throws UserException;
+    void updateUserByFirstName(long id, String firstName) throws UserException;
+    void updateUserByEmail(long id, String email) throws UserException;
+    void updateUserByTelephone(long id, Telephone telephone) throws UserException;
+    void updateUserByRole(long id, Role role) throws UserException;
 
 
-    void remove(int id) throws UserException;
-    void remove(User user) throws UserException;
+    void remove(long id) throws UserException;
+    void remove(User user);
 
-    User getById(int id) throws UserException;
-    User getUserByLastName(String lastName);
-    User getUserByFirstName(String firstName);
-    User[] getAll();
+    User getById(long id) throws UserException;
+    User getUserByLastName(String lastName) throws UserException;
+    User getUserByFirstName(String firstName) throws UserException;
+    List<User> getAll();
 
-    User checkUser(String mobileNumber);
+    boolean checkUser(String mobileNumber);
+    boolean checkEmail(String email);
 
 }
