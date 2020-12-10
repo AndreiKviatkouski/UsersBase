@@ -12,6 +12,10 @@ public class Writer {
         System.out.println(str);
     }
 
+    public static void writeObject(Object o) {
+        System.out.println(o);
+    }
+
     public static void writeUserToFile(List<User> users) {
         try {
             FileOutputStream fos = new FileOutputStream("JavaObjects.txt");

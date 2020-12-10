@@ -1,5 +1,7 @@
 package by.AndreiKviatkouski.storage;
 
+import by.AndreiKviatkouski.console.exception.AddRoleException;
+import by.AndreiKviatkouski.console.exception.UserException;
 import by.AndreiKviatkouski.domain.Role;
 import by.AndreiKviatkouski.domain.Telephone;
 import by.AndreiKviatkouski.domain.User;
@@ -16,14 +18,22 @@ public class UserStorageImpl implements UserStorage {
         Telephone telephone1 = new Telephone("8017-100-00-00", "+375-29-100-00-00");
         Telephone telephone2 = new Telephone("8017-200-00-00", "+375-29-200-00-00");
         Telephone telephone3 = new Telephone("8017-300-00-00", "+375-29-300-00-00");
-        User user1 = new User(1, "Cho", "Li", "cho@li.com", Role.ADMIN, telephone1);
-        User user2 = new User(2, "Bob", "Jenson", "bob@gmail.com", Role.USER, telephone2);
-        User user3 = new User(3, "Ivan", "Petrov", "ivan@mail.ru", Role.MODERATOR, telephone3);
+        User user1 = new User(1, "Bob", "Li", "cho@li.com", telephone1);
+        User user2 = new User(2, "Bob", "Beans", "bob@gmail.com", telephone2);
+        User user3 = new User(3, "Ivan", "Li", "ivan@mail.ru", telephone3);
         users.add(user1);
         users.add(user2);
         users.add(user3);
+        try {
+            user1.addRole(new Role(Role.USER));
+            user1.addRole(new Role(Role.ADMIN));
+            user2.addRole(new Role(Role.CUSTOMER));
+            user2.addRole(new Role(Role.PROVIDER));
+            user3.addRole(new Role(Role.SUPER_ADMIN));
+        } catch (AddRoleException e) {
+            e.printStackTrace();
+        }
     }
-
 
     @Override
     public boolean save(User user) {
@@ -31,58 +41,30 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public void updateUserByLastName(long id, String lastName) {
-        for (User value : users) {
-            if (value.getId() == id) {
-                value.setLastName(lastName);
-                return;
-            }
+    public User update(long id, User user) throws AddRoleException {
+//        if (user.getId() == 0) {
+//            throw new UserException();
+//        }
 
+        User existedUser = getById(user.getId());
+
+        if (user.getFirstName() != null) {
+            existedUser.setFirstName(user.getFirstName());
         }
-    }
-
-    @Override
-    public void updateUserByFirstName(long id, String firstName) {
-        for (User value : users) {
-            if (value.getId() == id) {
-                value.setFirstName(firstName);
-                return;
-            }
-
+        if (user.getLastName() != null) {
+            existedUser.setLastName(user.getLastName());
         }
-    }
-
-    @Override
-    public void updateUserByEmail(long id, String email) {
-        for (User value : users) {
-            if (value.getId() == id) {
-                value.setEmail(email);
-                return;
-            }
-
+        if (user.getEmail() != null) {
+            existedUser.setEmail(user.getEmail());
         }
-    }
-
-    @Override
-    public void updateUserByTelephone(long id, Telephone telephone) {
-        for (User value : users) {
-            if (value.getId() == id) {
-                value.setTelephone(telephone);
-                return;
-            }
-
+        if (user.getRoles() != null) {
+            existedUser.addRole((Role) user.getRoles());
         }
-    }
-
-    @Override
-    public void updateUserByRole(long id, Role role) {
-        for (User value : users) {
-            if (value.getId() == id) {
-                value.setRole(role);
-                return;
-            }
-
+        if (user.getTelephone() != null) {
+            existedUser.setTelephone(user.getTelephone());
         }
+        save(existedUser);
+        return user;
     }
 
 
@@ -95,16 +77,9 @@ public class UserStorageImpl implements UserStorage {
         }
     }
 
-
-    @Override
-    public void remove(User user) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).equals(user)) {
-                users.remove(users.get(i));
-            }
-        }
-    }
-
+//    public List<User> getByParams(Params...) {
+//        "select * from user where firstname= ''' and lastname .....    "
+//    }
 
     @Override
     public User getById(long id) {
@@ -117,24 +92,28 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User getUserByLastName(String lastName) {
+    public List<User> getUserByLastName(String lastName) {
+        List<User> lastNameList = new ArrayList<>();
         for (User user : users) {
             if (user.getLastName().equals(lastName)) {
-                return user;
+                lastNameList.add(user);
             }
         }
-        return null;
+        return lastNameList;
     }
 
+
     @Override
-    public User getUserByFirstName(String firstName) {
+    public List<User> getUserByFirstName(String firstName) {
+        List<User> firstNameList = new ArrayList<>();
         for (User user : users) {
             if (user.getFirstName().equals(firstName)) {
-                return user;
+                firstNameList.add(user);
             }
         }
-        return null;
+        return firstNameList;
     }
+
 
     @Override
     public List<User> getAll() {
@@ -157,7 +136,7 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public boolean contains(String lastName) {
+    public boolean containsLastName(String lastName) {
         for (User user : users) {
             if (user.getLastName().equals(lastName)) {
                 return true;
@@ -179,12 +158,19 @@ public class UserStorageImpl implements UserStorage {
     @Override
     public boolean containsEmail(String email) {
         for (User user : users) {
-            if (user.getEmail().equals(email)){
+            if (user.getEmail().equals(email)) {
                 return true;
             }
 
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        UserStorageImpl userStorage = new UserStorageImpl();
+        System.out.println(userStorage.containsLastName("Beans"));
+        System.out.println(userStorage.getUserByLastName("Li"));
+
     }
 }
 

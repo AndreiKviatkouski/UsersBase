@@ -1,5 +1,6 @@
 package by.AndreiKviatkouski.console.action;
 
+import by.AndreiKviatkouski.console.exception.AddRoleException;
 import by.AndreiKviatkouski.console.exception.UserException;
 import by.AndreiKviatkouski.console.util.Writer;
 import by.AndreiKviatkouski.console.validator.TelephoneValidator;
@@ -12,6 +13,7 @@ import by.AndreiKviatkouski.service.UserServiceImpl;
 import java.util.List;
 
 import static by.AndreiKviatkouski.console.util.Reader.*;
+import static by.AndreiKviatkouski.console.util.Writer.writeObject;
 import static by.AndreiKviatkouski.console.util.Writer.writeString;
 
 
@@ -19,7 +21,7 @@ public class UserActionImpl implements UserAction {
     UserServiceImpl userService = new UserServiceImpl();
 
     @Override
-    public void save() {
+    public void save() throws AddRoleException {
         writeString("Enter FirstName");
         String firstName = readLine();
         while (!UserValidator.validName(firstName)) {
@@ -62,7 +64,9 @@ public class UserActionImpl implements UserAction {
 
         Telephone telephone = new Telephone(homeNumber, mobileNumber);
         User user = new User(firstName, lastName, email, telephone);
-        user.setRole(Role.USER);
+        user.addRole(new Role(Role.USER));
+        user.addRole(new Role(Role.ADMIN));
+
         userService.save(user);
         writeString("Creation is successful" + user + "\n");
 
@@ -70,7 +74,7 @@ public class UserActionImpl implements UserAction {
     }
 
     @Override
-    public void updateUserLastNameById() {
+    public void updateUserLastNameById() throws UserException, AddRoleException {
         long id = readId();
         while (!UserValidator.validId(id)) {
             writeString("Invalid ID: " + id + "\n" + "Try again,");
@@ -82,19 +86,16 @@ public class UserActionImpl implements UserAction {
             writeString("Invalid lastName: " + lastName + "\n" + "Try again! Enter LastName:");
             lastName = readLine();
         }
-        try {
-            userService.updateUserByLastName(id, lastName);
-            writeString("User's lastName was updated:" + lastName + "\n");
-        } catch (UserException e) {
-            System.err.println(e.getMessage());
-        }
-
+        User user = userService.getById(id);
+        user.setLastName(lastName);
+        userService.update(id, user);
+        writeString("User's lastName was updated:" + lastName + "\n");
         Writer.writeUserToFile(userService.getAll());
     }
 
 
     @Override
-    public void updateUserFirstNameById() {
+    public void updateUserFirstNameById() throws UserException, AddRoleException {
         long id = readId();
         while (!UserValidator.validId(id)) {
             writeString("Invalid ID: " + id + "\n" + "Try again,:");
@@ -106,17 +107,15 @@ public class UserActionImpl implements UserAction {
             writeString("Invalid FirstName: " + firstName + "\n" + "Try again! Enter FirstName:");
             firstName = readLine();
         }
-        try {
-            userService.updateUserByFirstName(id, firstName);
-            writeString("User's firstName was updated:" + firstName + "\n");
-        } catch (UserException e) {
-            System.err.println(e.getMessage());
-        }
+        User user = userService.getById(id);
+        userService.update(id, user);
+        user.setFirstName(firstName);
+        writeString("User's firstName was updated:" + firstName + "\n");
         Writer.writeUserToFile(userService.getAll());
     }
 
     @Override
-    public void updateUserEmailById() {
+    public void updateUserEmailById() throws UserException, AddRoleException {
         long id = readId();
         while (!UserValidator.validId(id)) {
             writeString("Invalid ID: " + id + "\n" + "Try again,:");
@@ -132,18 +131,17 @@ public class UserActionImpl implements UserAction {
             System.err.println("User with email exist: " + email + "\n");
             return;
         }
-        try {
-            userService.updateUserByEmail(id, email);
-            writeString("User's email was updated:" + email + "\n");
-        } catch (UserException e) {
-            System.err.println(e.getMessage());
-        }
+
+        User user = userService.getById(id);
+        userService.update(id, user);
+        user.setEmail(email);
+        writeString("User's email was updated:" + email + "\n");
         Writer.writeUserToFile(userService.getAll());
     }
 
 
     @Override
-    public void updateUserTelephonesById() {
+    public void updateUserTelephonesById() throws UserException, AddRoleException {
         long id = readId();
         while (!UserValidator.validId(id)) {
             writeString("Invalid ID: " + id + "\n" + "Try again,:");
@@ -169,123 +167,115 @@ public class UserActionImpl implements UserAction {
             return;
         }
         Telephone telephone = new Telephone(homeNumber, mobileNumber);
-        try {
-            userService.updateUserByTelephone(id, telephone);
-            writeString("User's " + userService.getById(id).getLastName() + " telephone was updated:" + "home number: " + telephone.getHomeNumber() + " mobile number: " + telephone.getMobileNumber());
-        } catch (UserException e) {
-            System.err.println(e.getMessage());
-        }
+
+        User user = userService.getById(id);
+        userService.update(id, user);
+        user.setTelephone(telephone);
+        writeString("User's " + userService.getById(id).getLastName() + " telephone was updated:" + "home number: " + telephone.getHomeNumber() + " mobile number: " + telephone.getMobileNumber());
         Writer.writeUserToFile(userService.getAll());
     }
 
     @Override
-    public void updateUserRoleById() {
+    public void updateUserRoleById() throws UserException, AddRoleException {
         long id = readId();
         while (!UserValidator.validId(id)) {
             writeString("Invalid ID: " + id + "\n" + "Try again,:");
             id = readId();
         }
-        writeString("Chose role: 1 - ADMIN, 2 - MODERATOR, 3 - USER");
+        writeString("Chose role: 1 - SUPER_ADMIN, 2 - USER + ADMIN, 3 - USER + PROVIDER, 4 - CUSTOMER + ADMIN, 5 - CUSTOMER + PROVIDER");
         int role = readInt();
         while (!UserValidator.validId(role)) {
             writeString("Invalid role: " + role + "\n" + "Try again! Enter Role:");
             role = readInt();
         }
-        try {
-            switch (role) {
-                case 1 -> userService.updateUserByRole(id, Role.ADMIN);
-                case 2 -> userService.updateUserByRole(id, Role.MODERATOR);
-                case 3 -> userService.updateUserByRole(id, Role.USER);
-                default -> writeString("Set default role USER " + "\n");
 
+        switch (role) {
+
+            case 1 -> {
+                new Role(Role.SUPER_ADMIN);
             }
-        } catch (UserException e) {
-            System.err.println(e.getMessage());
+            case 2 -> {
+                new Role(Role.USER);
+                new Role(Role.ADMIN);
+            }
+            case 3 -> {
+                new Role(Role.USER);
+                new Role(Role.PROVIDER);
+            }
+            case 4 -> {
+                new Role(Role.CUSTOMER);
+                new Role(Role.ADMIN);
+            }
+            case 5 -> {
+                new Role(Role.CUSTOMER);
+                new Role(Role.PROVIDER);
+            }
+            default -> writeString("Set default role USER " + "\n");
+
         }
+        User user = userService.getById(id);
+        userService.update(id, user);
+        user.addRole(new Role(role));
         writeString("User's role was successfully updated!");
         Writer.writeUserToFile(userService.getAll());
     }
 
 
     @Override
-    public void removeById() {
+    public void removeById() throws UserException {
         long id = readId();
         while (!UserValidator.validId(id)) {
             writeString("Invalid ID: " + id + "\n" + "Try again,");
             id = readId();
         }
-        try {
-            userService.remove(id);
-            writeString("User was deleted" + "\n");
-        }catch (UserException e){
-            System.err.println("Id not found!");
-        }
-            Writer.writeUserToFile(userService.getAll());
-        }
-
-
-    @Override
-    public void removeUser() {
-        for (int i = 0; i < userService.getAll().size(); i++) {
-            writeString((i + 1) + " " + userService.getAll().get(i).getLastName());
-        }
-        int i = readInt() - 1;
-        try {
-            userService.remove(userService.getAll().get(i));
-            writeString("User was deleted!");
-        } catch (IndexOutOfBoundsException e) {
-            System.err.println(e.getMessage());
-        }
+        userService.remove(id);
+        writeString("User was deleted" + "\n");
         Writer.writeUserToFile(userService.getAll());
     }
 
 
     @Override
-    public void getById() {
+    public void getById() throws UserException {
         long id = readId();
         while (!UserValidator.validId(id)) {
             writeString("Invalid ID: " + id + "\n" + "Try again! Enter Id:");
             id = readId();
         }
-        try {
-            userService.getById(id);
-            writeString("The user is found: " + userService.getById(id) + "\n");
-        } catch (UserException e) {
-            System.err.println(e.getMessage());
-        }
+        userService.getById(id);
+        writeString("The user is found: " + userService.getById(id) + "\n");
     }
 
 
     @Override
-    public void getUserByLastName() {
+    public void getUserByLastName() throws UserException {
         Writer.writeString("Enter LastName");
         String lastName = readLine();
         while (!UserValidator.validName(lastName)) {
             writeString("Invalid LastName" + "\n" + "Try again! Enter LastName:");
             lastName = readLine();
         }
-        try {
-            userService.getUserByLastName(lastName);
-            writeString("The user is found: " + userService.getUserByLastName(lastName) + "\n");
-        } catch (UserException e) {
-            System.err.println(e.getMessage());
+        List<User> userList = userService.getUserByLastName(lastName);
+
+        writeString("The user is found:");
+        for (User user : userList) {
+            writeObject(user);
         }
     }
 
 
     @Override
-    public void getUserByFirstName() {
+    public void getUserByFirstName() throws UserException {
         Writer.writeString("Enter FirstName");
         String firstName = readLine();
         while (!UserValidator.validName(firstName)) {
             writeString("Invalid FirstName" + "\n" + "Try again! Enter FirstName:");
             firstName = readLine();
         }
-        try {
-            userService.getUserByFirstName(firstName);
-            writeString("The user is found: " + userService.getUserByFirstName(firstName) + "\n");
-        } catch (UserException e) {
-            System.err.println(e.getMessage());
+        List<User> userList = userService.getUserByFirstName(firstName);
+
+        writeString("The user is found:");
+        for (User user : userList) {
+            writeObject(user);
         }
     }
 
@@ -293,7 +283,7 @@ public class UserActionImpl implements UserAction {
     public void getAll() {
         List<User> all = userService.getAll();
         for (int i = 0; i < all.size(); i++) {
-            writeString((i + 1) + " " + all.get(i).getFirstName() + " " + all.get(i).getLastName() + " " + all.get(i).getRole() + " email: " + all.get(i).getEmail() + " home phone: " + all.get(i).getTelephone().getHomeNumber() + " mobile phone: " + all.get(i).getTelephone().getMobileNumber());
+            writeString((i + 1) + " " + all.get(i).getFirstName() + " " + all.get(i).getLastName() + " " + all.get(i).getRoles() + " email: " + all.get(i).getEmail() + " home phone: " + all.get(i).getTelephone().getHomeNumber() + " mobile phone: " + all.get(i).getTelephone().getMobileNumber());
         }
     }
 }

@@ -1,7 +1,12 @@
 package by.AndreiKviatkouski.domain;
 
+import by.AndreiKviatkouski.console.exception.AddRoleException;
+
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class User implements Serializable {
     private static long incId = 1;
@@ -10,48 +15,8 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    private Role role;
+    private Set<Role> roles = new HashSet<>();
     private Telephone telephone;
-
-    public User() {
-    }
-
-    public User(long id, String firstName, String lastName, String email, Role role) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-    }
-
-    public User(long id, String firstName, String lastName, Role role, Telephone telephone) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-        this.telephone = telephone;
-    }
-
-    public User(long id, String firstName, String lastName, Role role) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-    }
-    public User(String firstName, String lastName, String email,Telephone telephone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.telephone = telephone;
-    }
-    public User(long id, String firstName, String lastName, String email, Role role, Telephone telephone) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-        this.telephone = telephone;
-    }
 
     public long getId() {
         return id;
@@ -85,13 +50,6 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     public Telephone getTelephone() {
         return telephone;
@@ -100,17 +58,44 @@ public class User implements Serializable {
     public void setTelephone(Telephone telephone) {
         this.telephone = telephone;
     }
+    public Set<Role> getRoles() {
+        return roles;
+    }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                ", telephone=" + telephone +
-                '}';
+    public void addRole(Role role) throws AddRoleException {
+        for(Role r : this.roles){
+            if(r.getLevel() == role.getLevel())
+                throw new AddRoleException();
+        }
+        this.roles.add(role);
+    }
+
+    public User() {
+    }
+
+    public User(String firstName, String lastName, String email, Telephone telephone) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.telephone = telephone;
+    }
+
+    public User(long id, String firstName, String lastName, String email, Role... roles) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.roles.addAll(Arrays.asList(roles));
+    }
+
+
+
+    public User(long id, String firstName, String lastName, String email, Telephone telephone) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.telephone = telephone;
     }
 
     @Override
@@ -122,12 +107,24 @@ public class User implements Serializable {
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
-                role == user.role &&
+                Objects.equals(roles, user.roles) &&
                 Objects.equals(telephone, user.telephone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, role, telephone);
+        return Objects.hash(id, firstName, lastName, email, roles, telephone);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                ", telephone=" + telephone +
+                '}';
     }
 }

@@ -2,6 +2,8 @@ package by.AndreiKviatkouski.console;
 
 import by.AndreiKviatkouski.console.action.TelephoneActionImpl;
 import by.AndreiKviatkouski.console.action.UserActionImpl;
+import by.AndreiKviatkouski.console.exception.AddRoleException;
+import by.AndreiKviatkouski.console.exception.UserException;
 
 import static by.AndreiKviatkouski.console.util.Reader.readInt;
 import static by.AndreiKviatkouski.console.util.Writer.writeString;
@@ -13,101 +15,95 @@ public class ConsoleApplication {
 
 
     public void run() {
-        while (true) {
+        boolean notExit = true;
+        while (notExit) {
             showUserMenu();
             switch (readInt()) {
-                case 0:
-                    return;
-                case 1:
-                    showGetUserMenu();
-                    switch (readInt()) {
-                        case 0:
-                            continue;
-                        case 1:
-                            userAction.getAll();
-                            continue;
-                        case 2:
-                            userAction.getById();
-                            continue;
-                        case 3:
-                            userAction.getUserByFirstName();
-                            continue;
-                        case 4:
-                            userAction.getUserByLastName();
-                            continue;
-                        default:
-                            writeString("Operation not found");
-                            continue;
-                    }
-                case 2:
-                    showRemoveUserMenu();
-                    switch (readInt()) {
-                        case 0:
-                            continue;
-                        case 1:
-                            userAction.removeUser();
-                            continue;
-                        case 2:
-                            userAction.removeById();
-                            continue;
-                        default:
-                            writeString("Operation not found");
-                           continue;
-                    }
+                case 1 -> menuGet();
+                case 2 -> menuRemove();
+                case 3 -> menuUpdate();
+                case 4 -> menuCreate();
+                case 0 -> notExit = false;
+                default -> writeString("Operation not found");
+            }
+        }
+    }
 
+    public void menuGet() {
+        boolean notExit = true;
+        while (notExit) {
+            showGetUserMenu();
+            try {
+                switch (readInt()) {
+                    case 1 -> userAction.getAll();
+                    case 2 -> userAction.getById();
+                    case 3 -> userAction.getUserByFirstName();
+                    case 4 -> userAction.getUserByLastName();
+                    case 0 -> notExit = false;
+                    default -> writeString("Operation not found");
+                }
+            } catch (UserException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+    }
 
-                case 3:
-                    showUpdateUserMenu();
-                    switch (readInt()) {
-                        case 0:
-                            continue;
-                        case 1:
-                            userAction.updateUserEmailById();
-                            continue;
-                        case 2:
-                            userAction.updateUserFirstNameById();
-                            continue;
-                        case 3:
-                            userAction.updateUserLastNameById();
-                            continue;
-                        case 4:
-                            userAction.updateUserRoleById();
-                            continue;
-                        case 5:
-                            userAction.updateUserTelephonesById();
-                            continue;
-                        case 6:
-                            telephoneAction.updatePhoneMobileNumberById();
-                            continue;
-                        case 7:
-                            telephoneAction.updatePhoneHomeNumberById();
-                            continue;
-                        default:
-                            writeString("Operation not found");
-                           continue;
-                    }
-                case 4:
-                    showSaveUserMenu();
-                    switch (readInt()) {
-                        case 0:
-                            continue;
-                        case 1:
-                            userAction.save();
-                            continue;
-                        default:
-                            writeString("Operation not found");
-                            continue;
-                    }
+    public void menuRemove() {
+        boolean notExit = true;
+        while (notExit) {
+            showRemoveUserMenu();
+            try {
+                switch (readInt()) {
+                    case 1 -> userAction.removeById();
+                    case 0 -> notExit = false;
+                    default -> writeString("Operation not found");
+                }
+            } catch (UserException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+    }
 
-                default:
-                    writeString("Operation not found");
-                    break;
+    public void menuUpdate() {
+        boolean notExit = true;
+        while (notExit) {
+            showUpdateUserMenu();
+            try {
+                switch (readInt()) {
+                    case 1 -> userAction.updateUserEmailById();
+                    case 2 -> userAction.updateUserFirstNameById();
+                    case 3 -> userAction.updateUserLastNameById();
+                    case 4 -> userAction.updateUserRoleById();
+                    case 5 -> userAction.updateUserTelephonesById();
+                    case 6 -> telephoneAction.updatePhoneHomeNumberById();
+                    case 7 -> telephoneAction.updatePhoneMobileNumberById();
+                    case 0 -> notExit = false;
+                    default -> writeString("Operation not found");
+                }
+            } catch (UserException | AddRoleException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+    }
+
+    public void menuCreate() {
+        boolean notExit = true;
+        while (notExit) {
+            showSaveUserMenu();
+            try {
+                switch (readInt()) {
+                    case 1 -> userAction.save();
+                    case 0 -> notExit = false;
+                    default -> writeString("Operation not found");
+                }
+            } catch (AddRoleException e) {
+                System.err.println(e.getMessage());
             }
         }
     }
 
     private void showUserMenu() {
-        writeString("!!!!! USER MENU!!!!!" + "\n");
+        writeString("\n" + "!!!!! USER MENU!!!!!" + "\n");
         writeString("0  - Exit");
         writeString("1  - GET USER MENU");
         writeString("2  - REMOVE USER MENU");
@@ -117,8 +113,8 @@ public class ConsoleApplication {
     }
 
     private void showGetUserMenu() {
-        writeString("!!!!!GET USER MENU!!!!!" + "\n");
-        writeString("0  - Logout");
+        writeString("\n" + "!!!!!GET USER MENU!!!!!" + "\n");
+        writeString("0  - Back");
         writeString("1  - get all user");
         writeString("2  - get user by id");
         writeString("3  - get user by firstname");
@@ -127,16 +123,15 @@ public class ConsoleApplication {
     }
 
     private void showRemoveUserMenu() {
-        writeString("!!!!!GET USER MENU!!!!!" + "\n");
-        writeString("0  - Logout");
-        writeString("1  - remove user");
-        writeString("2  - remove user by Id" + "\n");
+        writeString("\n" + "!!!!!GET USER MENU!!!!!" + "\n");
+        writeString("0  - Back");
+        writeString("1  - remove user by Id" + "\n");
 
     }
 
     private void showUpdateUserMenu() {
-        writeString("!!!!!UPDATE USER MENU!!!!!" + "\n");
-        writeString("0  - Logout");
+        writeString("\n" + "!!!!!UPDATE USER MENU!!!!!" + "\n");
+        writeString("0  - Back");
         writeString("1  - update user email by id ");
         writeString("2  - update user firstname by id");
         writeString("3  - update user lastname by id");
@@ -147,8 +142,8 @@ public class ConsoleApplication {
     }
 
     private void showSaveUserMenu() {
-        writeString("!!!!!Save USER MENU!!!!!" + "\n");
-        writeString("0  - Logout");
+        writeString("\n" + "!!!!!Save USER MENU!!!!!" + "\n");
+        writeString("0  - Back");
         writeString("1  - save user" + "\n");
     }
 }
