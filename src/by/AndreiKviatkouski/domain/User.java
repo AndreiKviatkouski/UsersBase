@@ -15,7 +15,7 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    private Set<Role> roles = new HashSet<>();
+    public Set<Role> roles = new HashSet<>();
     private Telephone telephone;
 
     public long getId() {
@@ -58,14 +58,16 @@ public class User implements Serializable {
     public void setTelephone(Telephone telephone) {
         this.telephone = telephone;
     }
+
     public Set<Role> getRoles() {
         return roles;
     }
 
+
     public void addRole(Role role) throws AddRoleException {
-        for(Role r : this.roles){
-            if(r.getLevel() == role.getLevel())
-                throw new AddRoleException();
+        for (Role r : this.roles) {
+            if (r.getLevel() == role.getLevel())
+                throw new AddRoleException("Invalid Role");
         }
         this.roles.add(role);
     }
@@ -87,7 +89,6 @@ public class User implements Serializable {
         this.email = email;
         this.roles.addAll(Arrays.asList(roles));
     }
-
 
 
     public User(long id, String firstName, String lastName, String email, Telephone telephone) {

@@ -18,6 +18,7 @@ import static by.AndreiKviatkouski.console.util.Writer.writeString;
 
 
 public class UserActionImpl implements UserAction {
+
     UserServiceImpl userService = new UserServiceImpl();
 
     @Override
@@ -86,7 +87,7 @@ public class UserActionImpl implements UserAction {
             writeString("Invalid lastName: " + lastName + "\n" + "Try again! Enter LastName:");
             lastName = readLine();
         }
-        User user = userService.getById(id);
+        User user = new User();
         user.setLastName(lastName);
         userService.update(id, user);
         writeString("User's lastName was updated:" + lastName + "\n");
@@ -107,9 +108,9 @@ public class UserActionImpl implements UserAction {
             writeString("Invalid FirstName: " + firstName + "\n" + "Try again! Enter FirstName:");
             firstName = readLine();
         }
-        User user = userService.getById(id);
-        userService.update(id, user);
+        User user = new User();
         user.setFirstName(firstName);
+        userService.update(id, user);
         writeString("User's firstName was updated:" + firstName + "\n");
         Writer.writeUserToFile(userService.getAll());
     }
@@ -132,9 +133,10 @@ public class UserActionImpl implements UserAction {
             return;
         }
 
-        User user = userService.getById(id);
-        userService.update(id, user);
+        User user = new User();
         user.setEmail(email);
+        userService.update(id, user);
+
         writeString("User's email was updated:" + email + "\n");
         Writer.writeUserToFile(userService.getAll());
     }
@@ -168,9 +170,10 @@ public class UserActionImpl implements UserAction {
         }
         Telephone telephone = new Telephone(homeNumber, mobileNumber);
 
-        User user = userService.getById(id);
-        userService.update(id, user);
+        User user = new User();
         user.setTelephone(telephone);
+        userService.update(id, user);
+
         writeString("User's " + userService.getById(id).getLastName() + " telephone was updated:" + "home number: " + telephone.getHomeNumber() + " mobile number: " + telephone.getMobileNumber());
         Writer.writeUserToFile(userService.getAll());
     }
@@ -182,44 +185,29 @@ public class UserActionImpl implements UserAction {
             writeString("Invalid ID: " + id + "\n" + "Try again,:");
             id = readId();
         }
-        writeString("Chose role: 1 - SUPER_ADMIN, 2 - USER + ADMIN, 3 - USER + PROVIDER, 4 - CUSTOMER + ADMIN, 5 - CUSTOMER + PROVIDER");
-        int role = readInt();
-        while (!UserValidator.validId(role)) {
-            writeString("Invalid role: " + role + "\n" + "Try again! Enter Role:");
-            role = readInt();
+        writeString("Valid value: SUPER_ADMIN, USER + ADMIN, USER + PROVIDER,  CUSTOMER + ADMIN,  CUSTOMER + PROVIDER");
+        writeString("Chose first role: 1 - SUPER_ADMIN, 2 - USER, 3  - CUSTOMER");
+        int number = readInt();
+        User user = new User();
+
+        switch (number) {
+            case 1 -> user.addRole(new Role(Role.SUPER_ADMIN));
+            case 2 -> user.addRole(new Role(Role.USER));
+            case 3 -> user.addRole(new Role(Role.CUSTOMER));
+            default -> writeString("Operation not found!" + "\n");
         }
 
-        switch (role) {
-
-            case 1 -> {
-                new Role(Role.SUPER_ADMIN);
-            }
-            case 2 -> {
-                new Role(Role.USER);
-                new Role(Role.ADMIN);
-            }
-            case 3 -> {
-                new Role(Role.USER);
-                new Role(Role.PROVIDER);
-            }
-            case 4 -> {
-                new Role(Role.CUSTOMER);
-                new Role(Role.ADMIN);
-            }
-            case 5 -> {
-                new Role(Role.CUSTOMER);
-                new Role(Role.PROVIDER);
-            }
-            default -> writeString("Set default role USER " + "\n");
-
+        writeString("Chose second role: 1 - ADMIN , 2  - PROVIDER");
+        number = readInt();
+        switch (number) {
+            case 1 -> user.addRole(new Role(Role.ADMIN));
+            case 2 -> user.addRole(new Role(Role.PROVIDER));
+            default -> writeString("Operation not found!" + "\n");
         }
-        User user = userService.getById(id);
         userService.update(id, user);
-        user.addRole(new Role(role));
         writeString("User's role was successfully updated!");
         Writer.writeUserToFile(userService.getAll());
     }
-
 
     @Override
     public void removeById() throws UserException {
@@ -245,7 +233,6 @@ public class UserActionImpl implements UserAction {
         writeString("The user is found: " + userService.getById(id) + "\n");
     }
 
-
     @Override
     public void getUserByLastName() throws UserException {
         Writer.writeString("Enter LastName");
@@ -254,8 +241,9 @@ public class UserActionImpl implements UserAction {
             writeString("Invalid LastName" + "\n" + "Try again! Enter LastName:");
             lastName = readLine();
         }
-        List<User> userList = userService.getUserByLastName(lastName);
-
+        User userNew = new User();
+        userNew.setLastName(lastName);
+        List<User> userList = userService.getUserByParams(userNew);
         writeString("The user is found:");
         for (User user : userList) {
             writeObject(user);
@@ -271,8 +259,9 @@ public class UserActionImpl implements UserAction {
             writeString("Invalid FirstName" + "\n" + "Try again! Enter FirstName:");
             firstName = readLine();
         }
-        List<User> userList = userService.getUserByFirstName(firstName);
-
+        User userNew = new User();
+        userNew.setFirstName(firstName);
+        List<User> userList = userService.getUserByParams(userNew);
         writeString("The user is found:");
         for (User user : userList) {
             writeObject(user);

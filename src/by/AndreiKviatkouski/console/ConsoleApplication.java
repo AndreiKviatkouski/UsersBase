@@ -3,6 +3,7 @@ package by.AndreiKviatkouski.console;
 import by.AndreiKviatkouski.console.action.TelephoneActionImpl;
 import by.AndreiKviatkouski.console.action.UserActionImpl;
 import by.AndreiKviatkouski.console.exception.AddRoleException;
+import by.AndreiKviatkouski.console.exception.TelephoneException;
 import by.AndreiKviatkouski.console.exception.UserException;
 
 import static by.AndreiKviatkouski.console.util.Reader.readInt;
@@ -80,7 +81,7 @@ public class ConsoleApplication {
                     case 0 -> notExit = false;
                     default -> writeString("Operation not found");
                 }
-            } catch (UserException | AddRoleException e) {
+            } catch (UserException | AddRoleException | TelephoneException e) {
                 System.err.println(e.getMessage());
             }
         }
@@ -137,8 +138,8 @@ public class ConsoleApplication {
         writeString("3  - update user lastname by id");
         writeString("4  - update user role by id");
         writeString("5  - update user phones by id");
-        writeString("6  - update user mobile number by id ");
-        writeString("7  - update user home number by id " + "\n");
+        writeString("6  - update user home number by id ");
+        writeString("7  - update user mobile number by id " + "\n");
     }
 
     private void showSaveUserMenu() {

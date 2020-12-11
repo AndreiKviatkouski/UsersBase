@@ -3,11 +3,11 @@ package by.AndreiKviatkouski.service;
 
 import by.AndreiKviatkouski.console.exception.AddRoleException;
 import by.AndreiKviatkouski.domain.Role;
-import by.AndreiKviatkouski.domain.Telephone;
 import by.AndreiKviatkouski.domain.User;
 import by.AndreiKviatkouski.console.exception.UserException;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
     boolean save(User user);
@@ -16,11 +16,10 @@ public interface UserService {
 
     void remove(long id) throws UserException;
 
-
+    List<User> getUserByParams(User user) throws UserException;
     User getById(long id) throws UserException;
-    List<User> getUserByLastName(String lastName) throws UserException;
-    List<User> getUserByFirstName(String firstName) throws UserException;
     List<User> getAll();
+
 
     boolean checkUser(String mobileNumber);
     boolean checkEmail(String email);

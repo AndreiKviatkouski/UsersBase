@@ -2,6 +2,7 @@ package by.AndreiKviatkouski.service;
 
 import by.AndreiKviatkouski.console.exception.AddRoleException;
 import by.AndreiKviatkouski.console.exception.UserException;
+import by.AndreiKviatkouski.domain.Role;
 import by.AndreiKviatkouski.domain.User;
 import by.AndreiKviatkouski.storage.TelephoneStorageImpl;
 import by.AndreiKviatkouski.storage.UserStorageImpl;
@@ -26,12 +27,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(long id, User user) throws UserException, AddRoleException {
         if (userStorage.contains(id)) {
-            userStorage.update(id,user);
+            userStorage.update(id, user);
             return;
         }
         throw new UserException("Could not find user with ID: " + id);
     }
-
 
 
     @Override
@@ -43,6 +43,16 @@ public class UserServiceImpl implements UserService {
         throw new UserException("Could not find user with ID: " + id);
     }
 
+    @Override
+    public List<User> getUserByParams(User user) throws UserException {
+        if (userStorage.containsLastName(user.getLastName())) {
+            return userStorage.getUserByParams(user);
+        }
+        if (userStorage.containsFirstName(user.getFirstName())) {
+            return userStorage.getUserByParams(user);
+        }
+        throw new UserException("User was not found!");
+    }
 
     @Override
     public User getById(long id) throws UserException {
@@ -54,25 +64,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<User> getUserByLastName(String lastName) throws UserException {
-        if (userStorage.containsLastName(lastName)) {
-            return userStorage.getUserByLastName(lastName);
-        }
-        throw new UserException("Could not find user with LastName: " + lastName);
-    }
-
-    @Override
-    public List<User> getUserByFirstName(String firstName) throws UserException {
-        if (userStorage.containsFirstName(firstName)) {
-            return userStorage.getUserByFirstName(firstName);
-        }
-        throw new UserException("Could not find user with firstName: " + firstName);
-    }
-
-    @Override
     public List<User> getAll() {
         return userStorage.getAll();
     }
+
 
     @Override
     public boolean checkUser(String mobileNumber) {

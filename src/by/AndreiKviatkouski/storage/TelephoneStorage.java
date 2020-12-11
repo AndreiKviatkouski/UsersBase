@@ -4,8 +4,7 @@ import by.AndreiKviatkouski.domain.Telephone;
 
 public interface TelephoneStorage {
 
-   Telephone updateHomeNumberByIdUser(long id, String homeNumber);
-   Telephone updateMobileNumberByIdUser(long id, String mobileNumber);
+   Telephone update(long id,Telephone telephone);
 
     boolean contains(String mobileNumber);
     boolean containsHomeNumber(String homeNumber);

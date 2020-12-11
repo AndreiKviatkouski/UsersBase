@@ -15,9 +15,9 @@ public interface UserStorage {
 
     void remove(long id);
 
+
+    List<User> getUserByParams(User user);
     User getById(long id);
-    List<User> getUserByLastName(String lastName);
-    List<User>getUserByFirstName(String firstName);
     List<User> getAll();
 
     boolean contains(User user);

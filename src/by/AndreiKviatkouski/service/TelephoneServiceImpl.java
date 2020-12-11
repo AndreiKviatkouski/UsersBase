@@ -11,18 +11,11 @@ public class TelephoneServiceImpl implements TelephoneService {
     UserStorageImpl userStorage = new UserStorageImpl();
 
     @Override
-    public Telephone updateHomeNumberByUserId(long id, String homeNumber) throws TelephoneException {
-        if (!telephoneStorage.contains(homeNumber) && userStorage.contains(id)) {
-            return telephoneStorage.updateHomeNumberByIdUser(id, homeNumber);
-        }
-        throw new TelephoneException("Phone exist: " + homeNumber + " Try again!");
-    }
+    public Telephone update(long id, Telephone telephone) throws TelephoneException {
+        if (userStorage.contains(id)) {
+          return telephoneStorage.update(id, telephone);
 
-    @Override
-    public Telephone updateMobileNumberByUserId(long id, String mobileNumber) throws TelephoneException {
-        if (!telephoneStorage.contains(mobileNumber) && userStorage.contains(id)) {
-           return telephoneStorage.updateMobileNumberByIdUser(id, mobileNumber);
         }
-        throw new TelephoneException("Phone exist: " + mobileNumber + " Try again!");
+        throw new TelephoneException("Phone exist, try again!");
     }
 }

@@ -7,25 +7,17 @@ public class TelephoneStorageImpl implements TelephoneStorage {
 
     UserStorageImpl userStorage = new UserStorageImpl();
 
-
     @Override
-    public Telephone updateHomeNumberByIdUser(long id, String homeNumber) {
-        for (User user :  userStorage.getAll()) {
-            if (user.getId() == id) {
-                user.getTelephone().setHomeNumber(homeNumber);
-            }
-        }
-        return null;
-    }
+    public Telephone update(long id, Telephone telephone) {
+        User existedUser = userStorage.getById(id);
 
-    @Override
-    public Telephone updateMobileNumberByIdUser(long id, String mobileNumber) {
-        for (User user :  userStorage.getAll()) {
-            if (user.getId() == id) {
-                user.getTelephone().setMobileNumber(mobileNumber);
-            }
+        if (telephone.getMobileNumber() != null) {
+            existedUser.getTelephone().setMobileNumber(telephone.getMobileNumber());
         }
-        return null;
+        if (telephone.getHomeNumber() != null) {
+            existedUser.getTelephone().setHomeNumber(telephone.getHomeNumber());
+        }
+        return telephone;
     }
 
 

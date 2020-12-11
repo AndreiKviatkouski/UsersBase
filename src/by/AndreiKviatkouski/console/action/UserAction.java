@@ -12,7 +12,6 @@ public interface UserAction {
     void updateUserTelephonesById() throws UserException, AddRoleException;
     void updateUserRoleById() throws UserException, AddRoleException;
 
-
     void removeById() throws UserException;
     void getById() throws UserException;
     void getUserByLastName() throws UserException;
