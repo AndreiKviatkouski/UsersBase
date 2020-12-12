@@ -24,11 +24,11 @@ public class UserStorageImpl implements UserStorage {
         users.add(user2);
         users.add(user3);
         try {
-            user1.addRole(new Role(Role.USER));
-            user1.addRole(new Role(Role.ADMIN));
-            user2.addRole(new Role(Role.CUSTOMER));
-            user2.addRole(new Role(Role.PROVIDER));
-            user3.addRole(new Role(Role.SUPER_ADMIN));
+            user1.addRole(new Role(Role.USER_level,Role.USER_str));
+            user1.addRole(new Role(Role.ADMIN_level,Role.ADMIN_str));
+            user2.addRole(new Role(Role.PROVIDER_level,Role.PROVIDER_str));
+            user2.addRole(new Role(Role.CUSTOMER_level,Role.CUSTOMER_str));
+            user3.addRole(new Role(Role.SUPER_ADMIN_level,Role.SUPER_ADMIN_str));
         } catch (AddRoleException e) {
             e.printStackTrace();
         }
@@ -40,9 +40,9 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
-    public User update(long id, User user) throws AddRoleException {
+    public User update(User user) throws AddRoleException {
 
-        User existedUser = getById(id);
+        User existedUser = getById(user.getId());
 
         if (user.getFirstName() != null) {
             existedUser.setFirstName(user.getFirstName());

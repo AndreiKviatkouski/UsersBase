@@ -11,7 +11,7 @@ public interface UserStorage {
 
     boolean save(User user);
 
-    User update(long id, User user)throws UserException, AddRoleException;
+    User update(User user)throws UserException, AddRoleException;
 
     void remove(long id);
 

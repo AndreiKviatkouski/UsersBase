@@ -2,7 +2,6 @@ package by.AndreiKviatkouski.service;
 
 import by.AndreiKviatkouski.console.exception.AddRoleException;
 import by.AndreiKviatkouski.console.exception.UserException;
-import by.AndreiKviatkouski.domain.Role;
 import by.AndreiKviatkouski.domain.User;
 import by.AndreiKviatkouski.storage.TelephoneStorageImpl;
 import by.AndreiKviatkouski.storage.UserStorageImpl;
@@ -25,12 +24,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void update(long id, User user) throws UserException, AddRoleException {
-        if (userStorage.contains(id)) {
-            userStorage.update(id, user);
+    public void update(User user) throws UserException, AddRoleException {
+        if (userStorage.contains(user.getId())) {
+            userStorage.update(user);
             return;
         }
-        throw new UserException("Could not find user with ID: " + id);
+        throw new UserException("Could not find user with ID: " + user.getId());
     }
 
 

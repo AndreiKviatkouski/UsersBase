@@ -44,7 +44,7 @@ public class ConsoleApplication {
                     default -> writeString("Operation not found");
                 }
             } catch (UserException e) {
-                System.err.println(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -60,7 +60,7 @@ public class ConsoleApplication {
                     default -> writeString("Operation not found");
                 }
             } catch (UserException e) {
-                System.err.println(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -82,7 +82,7 @@ public class ConsoleApplication {
                     default -> writeString("Operation not found");
                 }
             } catch (UserException | AddRoleException | TelephoneException e) {
-                System.err.println(e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -98,7 +98,7 @@ public class ConsoleApplication {
                     default -> writeString("Operation not found");
                 }
             } catch (AddRoleException e) {
-                System.err.println(e.getMessage());
+                e.printStackTrace();
             }
         }
     }

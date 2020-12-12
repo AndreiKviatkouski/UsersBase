@@ -65,8 +65,8 @@ public class UserActionImpl implements UserAction {
 
         Telephone telephone = new Telephone(homeNumber, mobileNumber);
         User user = new User(firstName, lastName, email, telephone);
-        user.addRole(new Role(Role.USER));
-        user.addRole(new Role(Role.ADMIN));
+        user.addRole(new Role(Role.USER_level,Role.USER_str));
+        user.addRole(new Role(Role.ADMIN_level,Role.ADMIN_str));
 
         userService.save(user);
         writeString("Creation is successful" + user + "\n");
@@ -89,7 +89,8 @@ public class UserActionImpl implements UserAction {
         }
         User user = new User();
         user.setLastName(lastName);
-        userService.update(id, user);
+        user.setId(id);
+        userService.update(user);
         writeString("User's lastName was updated:" + lastName + "\n");
         Writer.writeUserToFile(userService.getAll());
     }
@@ -110,7 +111,8 @@ public class UserActionImpl implements UserAction {
         }
         User user = new User();
         user.setFirstName(firstName);
-        userService.update(id, user);
+        user.setId(id);
+        userService.update(user);
         writeString("User's firstName was updated:" + firstName + "\n");
         Writer.writeUserToFile(userService.getAll());
     }
@@ -135,7 +137,8 @@ public class UserActionImpl implements UserAction {
 
         User user = new User();
         user.setEmail(email);
-        userService.update(id, user);
+        user.setId(id);
+        userService.update(user);
 
         writeString("User's email was updated:" + email + "\n");
         Writer.writeUserToFile(userService.getAll());
@@ -172,7 +175,8 @@ public class UserActionImpl implements UserAction {
 
         User user = new User();
         user.setTelephone(telephone);
-        userService.update(id, user);
+        user.setId(id);
+        userService.update(user);
 
         writeString("User's " + userService.getById(id).getLastName() + " telephone was updated:" + "home number: " + telephone.getHomeNumber() + " mobile number: " + telephone.getMobileNumber());
         Writer.writeUserToFile(userService.getAll());
@@ -191,20 +195,21 @@ public class UserActionImpl implements UserAction {
         User user = new User();
 
         switch (number) {
-            case 1 -> user.addRole(new Role(Role.SUPER_ADMIN));
-            case 2 -> user.addRole(new Role(Role.USER));
-            case 3 -> user.addRole(new Role(Role.CUSTOMER));
-            default -> writeString("Operation not found!" + "\n");
+            case 1 -> user.addRole(new Role(Role.SUPER_ADMIN_level,Role.SUPER_ADMIN_str));
+            case 2 -> user.addRole(new Role(Role.USER_level,Role.USER_str));
+            case 3 -> user.addRole(new Role(Role.CUSTOMER_level,Role.CUSTOMER_str));
+            default -> throw new UserException("Operation not found!");
         }
 
         writeString("Chose second role: 1 - ADMIN , 2  - PROVIDER");
         number = readInt();
         switch (number) {
-            case 1 -> user.addRole(new Role(Role.ADMIN));
-            case 2 -> user.addRole(new Role(Role.PROVIDER));
+            case 1 -> user.addRole(new Role(Role.ADMIN_level,Role.ADMIN_str));
+            case 2 -> user.addRole(new Role(Role.PROVIDER_level,Role.PROVIDER_str));
             default -> writeString("Operation not found!" + "\n");
         }
-        userService.update(id, user);
+        user.setId(id);
+        userService.update(user);
         writeString("User's role was successfully updated!");
         Writer.writeUserToFile(userService.getAll());
     }

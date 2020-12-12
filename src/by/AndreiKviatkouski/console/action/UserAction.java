@@ -10,7 +10,7 @@ public interface UserAction {
     void updateUserFirstNameById() throws UserException, AddRoleException;
     void updateUserEmailById() throws UserException, AddRoleException;
     void updateUserTelephonesById() throws UserException, AddRoleException;
-    void updateUserRoleById() throws UserException, AddRoleException;
+    void updateUserRoleById() throws Exception;
 
     void removeById() throws UserException;
     void getById() throws UserException;

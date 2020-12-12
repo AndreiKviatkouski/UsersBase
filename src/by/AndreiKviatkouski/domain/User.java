@@ -66,7 +66,7 @@ public class User implements Serializable {
 
     public void addRole(Role role) throws AddRoleException {
         for (Role r : this.roles) {
-            if (r.getLevel() == role.getLevel())
+            if (r.getLevel().equals(role.getLevel()))
                 throw new AddRoleException("Invalid Role");
         }
         this.roles.add(role);
